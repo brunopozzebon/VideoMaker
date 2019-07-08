@@ -11,9 +11,10 @@ async function start () {
   content.searchTerm = await askAndReturnSearchTerm();
   content.prefix = askAndReturnPrefix();
   content.sentences = Array();
+  content.limitSentences = 6;
   
   await robots.text(content);
-  console.log(content);
+  console.log(JSON.stringify(content.sentences,null,4));
   
 
   async function askAndReturnSearchTerm () {
