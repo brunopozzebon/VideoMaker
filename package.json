@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/brunopozzebon/VideoMaker#readme",
   "dependencies": {
+    "algorithmia": "^0.3.10",
     "readline-sync": "^1.4.9",
     "rss-parser": "^3.7.2"
   }
