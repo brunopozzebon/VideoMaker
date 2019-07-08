@@ -3,20 +3,23 @@ const sbd = require("sbd");
 const apiKey = require("../credencials/algorithmia.json").apiKey;
 const apiKeyWatson = require("../credencials/watson.json").apikey;
 
-var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
- 
-var nlu = new NaturalLanguageUnderstandingV1({
+const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+const state = require("./state.js");
+const nlu = new NaturalLanguageUnderstandingV1({
   iam_apikey: apiKeyWatson,
   version: '2018-04-05',
   url: 'https://gateway.watsonplatform.net/natural-language-understanding/api/'
 });
  
-async function robot(content){
+async function robot(){
+    const content = state.load();
     await fetchWikipediaContent(content);
     cleanContent(content);
     breakContentIntoSentences(content);
     sliceWithMaxSentences(content);
     await fetchKeywordsOfTheSentences(content);
+
+    state.save(content);
 
     async function fetchWikipediaContent(content){
         const algorithmiaAuth = algorithmia(apiKey);

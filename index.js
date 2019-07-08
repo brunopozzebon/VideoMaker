@@ -1,45 +1,13 @@
-const readline = require('readline-sync');
-const Parser = require('rss-parser');
+
 const robots = {
-    text: require("./robots/text.js")
+    input: require("./robots/input.js"),
+    text: require("./robots/text.js"),
+    text: require("./robots/state.js")
 }
 
-const ULR_GOOGLE_TRENDS = 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=BR' ;
-
 async function start () {
-  let content = {};
-  content.searchTerm = await askAndReturnSearchTerm();
-  content.prefix = askAndReturnPrefix();
-  content.sentences = Array();
-  content.limitSentences = 6;
-  
-  await robots.text(content);
-  console.log(JSON.stringify(content.sentences,null,4));
-  
-
-  async function askAndReturnSearchTerm () {
-    const response = readline.question('Type a Wikipedia search term or G to fetch google trends: ');
-    return (response.toUpperCase() === 'G') ?  await askAndReturnTrend() : response;
-  }
-
-  async function askAndReturnTrend() {
-    const trends = await getGoogleTrends();
-    const choice = readline.keyInSelect(trends, 'Choose your trend:');    
-    return trends[choice];
-  }
-
-  async function getGoogleTrends () {
-    const parser = new Parser();
-    const trends = await parser.parseURL(ULR_GOOGLE_TRENDS);
-    return trends.items.map(i => i.title);
-  }
-
-  function askAndReturnPrefix () {
-    const prefixes = ['Who is', 'What is', 'The history of'];
-    const selectedPrefixIndex = readline.keyInSelect(prefixes, 'Choose one option: ');
-    const selectedPrefixText = prefixes[selectedPrefixIndex];
-    return selectedPrefixText;
-  }
+  robots.input();
+  await robots.text();
 }
 
 start();
