@@ -10,9 +10,10 @@ async function start () {
   let content = {};
   content.searchTerm = await askAndReturnSearchTerm();
   content.prefix = askAndReturnPrefix();
+  content.sentences = Array();
   
   await robots.text(content);
-  //console.log(content);
+  console.log(content);
   
 
   async function askAndReturnSearchTerm () {
