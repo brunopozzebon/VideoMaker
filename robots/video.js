@@ -1,34 +1,35 @@
-const gm = require('gm').subClass({imageMagick: true})
-const state = require('./state.js')
-const spawn = require('child_process').spawn
-const path = require('path')
-const rootPath = path.resolve(__dirname, '..')
+const gm = require('gm').subClass({imageMagick: true});
+const state = require('./state.js');
+const spawn = require('child_process').spawn;
+const path = require('path');
+const rootPath = path.resolve(__dirname, '..');
+
+const PATH_AERENDER = '/Program Files/Adobe/Adobe After Effects CC 2019/Support Files/aerender';
 
 
 async function robot() {
-  console.log('> [video-robot] Starting...')
-  const content = state.load()
+  const content = state.load();
 
-  await convertAllImages(content)
-  await createAllSentenceImages(content)
-  await createYouTubeThumbnail()
-  await createAfterEffectsScript(content)
-  await renderVideoWithAfterEffects()
+  await convertAllImages(content);
+  await createAllSentenceImages(content);
+  await createYouTubeThumbnail();
+  await createAfterEffectsScript(content);
+  await renderVideoWithAfterEffects();
 
-  state.save(content)
+  state.save(content);
 
   async function convertAllImages(content) {
     for (let sentenceIndex = 0; sentenceIndex < content.sentences.length; sentenceIndex++) {
-      await convertImage(sentenceIndex)
+      await convertImage(sentenceIndex);
     }
   }
 
   async function convertImage(sentenceIndex) {
     return new Promise((resolve, reject) => {
-      const inputFile = `./content/${sentenceIndex}-original.png[0]`
-      const outputFile = `./content/${sentenceIndex}-converted.png`
-      const width = 1920
-      const height = 1080
+      const inputFile = `./content/${sentenceIndex}-original.png[0]`;
+      const outputFile = `./content/${sentenceIndex}-converted.png`;
+      const width = 1920;
+      const height = 1080;
 
       gm()
         .in(inputFile)
@@ -52,25 +53,24 @@ async function robot() {
         .out('-extent', `${width}x${height}`)
         .write(outputFile, (error) => {
           if (error) {
-            return reject(error)
+            return reject(error);
           }
 
-          console.log(`> [video-robot] Image converted: ${outputFile}`)
-          resolve()
-        })
-
-    })
+          console.log(`> [Video Robot] Imagem ${sentenceIndex+1} converted`);
+          resolve();
+        });
+    });
   }
 
   async function createAllSentenceImages(content) {
     for (let sentenceIndex = 0; sentenceIndex < content.sentences.length; sentenceIndex++) {
-      await createSentenceImage(sentenceIndex, content.sentences[sentenceIndex].text)
+      await createSentenceImage(sentenceIndex, content.sentences[sentenceIndex].text);
     }
   }
 
   async function createSentenceImage(sentenceIndex, sentenceText) {
     return new Promise((resolve, reject) => {
-      const outputFile = `./content/${sentenceIndex}-sentence.png`
+      const outputFile = `./content/${sentenceIndex}-sentence.png`;
 
       const templateSettings = {
         0: {
@@ -102,7 +102,7 @@ async function robot() {
           gravity: 'center'
         }
 
-      }
+      };
 
       gm()
         .out('-size', templateSettings[sentenceIndex].size)
@@ -113,13 +113,13 @@ async function robot() {
         .out(`caption:${sentenceText}`)
         .write(outputFile, (error) => {
           if (error) {
-            return reject(error)
+            return reject(error);
           }
 
-          console.log(`> [video-robot] Sentence created: ${outputFile}`)
-          resolve()
-        })
-    })
+          console.log(`> [Video Robot] Sentence ${sentenceIndex+1} created`);
+          resolve();
+        });
+    });
   }
 
   async function createYouTubeThumbnail() {
@@ -128,44 +128,44 @@ async function robot() {
         .in('./content/0-converted.png')
         .write('./content/youtube-thumbnail.jpg', (error) => {
           if (error) {
-            return reject(error)
+            return reject(error);
           }
 
-          console.log('> [video-robot] YouTube thumbnail created')
-          resolve()
-        })
-    })
+          console.log('> [Video Robot] YouTube thumbnail created');
+          resolve();
+        });
+    });
   }
 
   async function createAfterEffectsScript(content) {
-    await state.saveScript(content)
+    await state.saveScript(content);
   }
 
   async function renderVideoWithAfterEffects() {
     return new Promise((resolve, reject) => {
-      const aerenderFilePath = '/Program Files/Adobe/Adobe After Effects CC 2019/Support Files/aerender'
-      const templateFilePath = `${rootPath}/templetes/v1/template.aep`
-      const destinationFilePath = `${rootPath}/content/output.avi`
+      const aerenderFilePath = PATH_AERENDER;
+      const templateFilePath = `${rootPath}/templetes/v1/template.aep`;
+      const destinationFilePath = `${rootPath}/content/output.avi`;
 
-      console.log('> [video-robot] Starting After Effects')
+      console.log('> [Video Robot] Starting with After Effects');
 
       const aerender = spawn(aerenderFilePath, [
         '-comp', 'main',
         '-project', templateFilePath,
         '-output', destinationFilePath
-      ])
+      ]);
 
       aerender.stdout.on('data', (data) => {
         process.stdout.write(data)
-      })
+      });
 
       aerender.on('close', () => {
-        console.log('> [video-robot] After Effects closed')
+        console.log('> [Video Robot] After Effects Closed')
         resolve()
-      })
-    })
+      });
+    });
   }
 
 }
 
-module.exports = robot
+module.exports = robot;

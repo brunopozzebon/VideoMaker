@@ -2,7 +2,8 @@ const readline = require('readline-sync');
 const Parser = require('rss-parser');
 const state = require("./state.js");
 
-const ULR_GOOGLE_TRENDS = 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=BR' ;
+const ULR_GOOGLE_TRENDS = 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=BR';
+const LANGUAGE_GOOGLE_TRENDS = "en";
 
 async function robot () {
   let content = {};
@@ -14,7 +15,7 @@ async function robot () {
   state.save(content);
   
   async function askAndReturnSearchTerm () {
-    const response = readline.question('Type a Wikipedia search term or G to fetch google trends: ');
+    const response = readline.question('Type a search term or G to a Google Trends List ');
     return (response.toUpperCase() === 'G') ?  await askAndReturnTrend() : response;
   }
 
