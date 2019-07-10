@@ -14,12 +14,12 @@ Criar um apiKey e substituir o campo apiKey do arquivo credentials/watson.json
 [Mais informações](https://www.youtube.com/watch?v=C6bf3A95Q7A)
 ### [Google Cloud Plataform](https://cloud.google.com/)
 * Criar a API do Google Cloud Plataform, acessando o link com uma conta google logada, criar um novo projeto, acessar a interface da API desejada (Custom Search), e criar uma apiKey nas opções credencials. Substituir o campo key do arquivo credentials/googleConsole.json
-* Configurar o motor de busca do google, acessando [Custom Search Enginer](https://cse.google.com/cse/create/new), após a criação copiar o ID do mecanismo de pesquisa para o campo searchEngineID do arquivo credentials/googleConsole.json  
+* Configurar o motor de busca do google, acessando [Custom Search Enginer](https://cse.google.com/cse/create/new), após a criação copiar o ID do mecanismo de pesquisa para o campo searchEngineID do arquivo credentials/googleConsole.json   
 [Mais informações](https://www.youtube.com/watch?v=LzPuCVhdUew&t=18s)
 ### [API Youtube](https://cloud.google.com/)
 * Ativar a Api Youtube V3 da plataforma do Google Cloud, e realizar a autenticação oAuth2, sem seguida baixar o arquivo JSON gerado pela plataforma, e substituir os campos do arquivo credetials/googleCredencials.json com as informações do arquivo baixado.  
 [Mais informações](https://www.youtube.com/watch?v=qYXBWBZTAbc&t=928s)
-###Dependências
+### Dependências
 Por fim, instalar as dependências gerenciadas pelo npm
 ```
 npm install
