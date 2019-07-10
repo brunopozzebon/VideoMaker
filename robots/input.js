@@ -9,7 +9,7 @@ async function robot () {
   content.searchTerm = await askAndReturnSearchTerm();
   content.prefix = askAndReturnPrefix();
   content.sentences = Array();
-  content.limitSentences = 6;
+  content.limitSentences = 7;
 
   state.save(content);
   
