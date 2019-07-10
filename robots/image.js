@@ -30,7 +30,7 @@ async function robot(){
             q:query,
             searchType:"image",
             imgSize:"huge",
-            num:2
+            num:4
         });
         const imagesUrl = response.data.items.map((item)=>{
             return item.link;
@@ -50,7 +50,6 @@ async function robot(){
                     }
                     await downloadImage(image,`${sentenceIndex}-original.png`);
                     content.downloadedImages.push(image);
-                    console.log("Baixou imagens");
                     break;
                 }catch(error){
                     console.log("Não baixou imagens");
