@@ -1,13 +1,18 @@
 const algorithmia = require("algorithmia");
 const sbd = require("sbd");
-const apiKey = require("../credencials/algorithmia.json").apiKey;
-const apiKeyWatson = require("../credencials/watson.json").apikey;
+const apiKey = require("../credentials/algorithmia.json").apiKey;
+const apiKeyWatson = require("../credentials/watson.json").apikey;
 
-const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+const URL_WATSON = 'watson-developer-cloud/natural-language-understanding/v1.js';
+const WATSON_VERSION = "2018-04-05";
+
+const LANGUAGE_WIKIPEDIA = "en";
+
+const NaturalLanguageUnderstandingV1 = require(URL_WATSON);
 const state = require("./state.js");
 const nlu = new NaturalLanguageUnderstandingV1({
   iam_apikey: apiKeyWatson,
-  version: '2018-04-05',
+  version: WATSON_VERSION,
   url: 'https://gateway.watsonplatform.net/natural-language-understanding/api/'
 });
  
@@ -18,14 +23,14 @@ async function robot(){
     breakContentIntoSentences(content);
     sliceWithMaxSentences(content);
     await fetchKeywordsOfTheSentences(content);
-
     state.save(content);
 
     async function fetchWikipediaContent(content){
+        console.log("> [Text Robot] Getting content for Wikipedia");
         const algorithmiaAuth = algorithmia(apiKey);
         const wikipediaAlgorithm = algorithmiaAuth.algo("web/WikipediaParser/0.1.2");
         const wikipediaResponse = await wikipediaAlgorithm.pipe({
-            "lang":"en",
+            "lang":LANGUAGE_WIKIPEDIA,
             "articleName":content.searchTerm
         });
         const wikipediaContent = wikipediaResponse.get();
@@ -79,7 +84,6 @@ async function robot(){
               reject(error);
               return;
             }
-    
             const keywords = response.keywords.map((keyword) => {
               return keyword.text;
             })
@@ -90,6 +94,7 @@ async function robot(){
       }
 
     async function fetchKeywordsOfTheSentences(content){
+        console.log("> [Text Robot] Fetch keywords of the sentences ");
         for(const sentence of content.sentences){
             sentence.keywords = await fetchWatsonAndReturnKeywords(sentence.text);
         }
