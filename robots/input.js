@@ -11,6 +11,7 @@ async function robot () {
   content.prefix = askAndReturnPrefix();
   content.sentences = Array();
   content.limitSentences = 7;
+  content.speeches = Array();
 
   state.save(content);
   

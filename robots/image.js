@@ -7,6 +7,8 @@ const imageDownloader = require("image-downloader");
 const IMG_SIZE = "huge";
 const NUM_OF_RESULTS = 4;
 
+const TYPE= "photo"; //clipart, face, lineart, news, and photo
+
 async function robot(){
     const content = state.load();
     await fetchAllImageSenteces(content);
@@ -30,6 +32,7 @@ async function robot(){
             q:query,
             searchType:"image",
             imgSize:IMG_SIZE,
+            imgType:TYPE,
             num:NUM_OF_RESULTS
         });
         const imagesUrl = response.data.items.map((item)=>{
