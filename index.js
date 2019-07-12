@@ -10,11 +10,13 @@ const robots = {
 }
 
 async function start () {
-  //await robots.input();
-  //await robots.text();
-  //await robots.image();
+  await robots.input();
+  await robots.text();
+
   await robots.speech();
-  //await robots.video();
+  await robots.image();
+  
+  await robots.video();
  // await robots.youtube();
  
 }
