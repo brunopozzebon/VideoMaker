@@ -16,7 +16,8 @@ async function robot () {
   state.save(content);
   
   async function askAndReturnSearchTerm () {
-    const response = readline.question('Type a search term or G to a Google Trends List ');
+    global.videoMode = readline.question('Do you wanna speech [1] or text [2] in your video: _ ');
+    const response = readline.question('Type a search term or G to a Google Trends List: _ ');
     return (response.toUpperCase() === 'G') ?  await askAndReturnTrend() : response;
   }
 

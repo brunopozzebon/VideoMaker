@@ -63,6 +63,9 @@ async function robot() {
   }
 
   async function createAllSentenceImages(content) {
+    if(typeof global.videoMode == undefined || global.videoMode==1){
+      return;
+    }
     for (let sentenceIndex = 0; sentenceIndex < content.sentences.length; sentenceIndex++) {
       await createSentenceImage(sentenceIndex, content.sentences[sentenceIndex].text);
     }

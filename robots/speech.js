@@ -6,13 +6,16 @@ const state = require("../robots/state.js");
 const LANGUAGE = 'en-US';
 
 async function robot() {
+  if(typeof global.videoMode != undefined || global.videoMode!=2){
+    return;
+  }
   console.log("> [Speech Robot] Starting speech");
   const content = state.load();
-  authenticate();
-  createAllSpeeches(content);
+  await authenticate();
+  await createAllSpeeches(content);
 }
 
-function authenticate(){
+async function authenticate(){
   //This is made with the credencials
 }
 
