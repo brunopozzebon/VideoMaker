@@ -20,7 +20,7 @@
     "@google-cloud/storage": "^3.0.2",
     "@google-cloud/text-to-speech": "^1.1.2",
     "algorithmia": "^0.3.10",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "gm": "^1.23.1",
     "googleapis": "^40.0.1",
